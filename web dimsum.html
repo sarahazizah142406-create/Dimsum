@@ -1,0 +1,1212 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dimcum A'SAM - Dimsum Lezat &amp; Hangat</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&amp;family=Playfair+Display:wght@700;800&amp;display=swap" rel="stylesheet">
+  <style>
+* { font-family: 'Poppins', sans-serif; }
+.playfair { font-family: 'Playfair Display', serif; }
+
+html, body { height: 100%; margin: 0; box-sizing: border-box; }
+
+/* Card Flip Animations */
+.card-container { perspective: 100vh; }
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.card-flipped .card-inner { transform: rotateY(180deg); }
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+}
+.card-back { transform: rotateY(180deg); }
+.card-matched { animation: matchPulse 0.5s ease; }
+
+@keyframes matchPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.float-animation { animation: float 3s ease-in-out infinite; }
+
+@keyframes confetti-fall {
+  0% { transform: translateY(-100%) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100%) rotate(720deg); opacity: 0; }
+}
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  animation: confetti-fall 3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-in { animation: slideIn 0.6s ease forwards; }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.8s ease forwards; }
+
+/* Menu Card Styles */
+.menu-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(220, 38, 38, 0.2);
+}
+
+/* Best Seller Card */
+.bestseller-card { transition: all 0.3s ease; }
+.bestseller-card:hover { transform: scale(1.02); }
+
+/* Promo Banner */
+.promo-banner {
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  animation: slideIn 0.8s ease;
+}
+
+/* Gold Gradient */
+.gold-gradient {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+}
+
+/* Scroll Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track { background: #fef5e7; }
+::-webkit-scrollbar-thumb {
+  background: #dc2626;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover { background: #991b1b; }
+
+/* Navigation Link Underline */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #dc2626;
+  transition: width 0.3s ease;
+}
+.nav-link:hover { color: #dc2626; }
+.nav-link:hover::after { width: 100%; }
+
+/* Button Glow */
+.btn-order {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-order:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
+}
+
+/* Scroll to Top Button */
+.scroll-to-top {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+.scroll-to-top.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 1s linear infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.badge-pulse { animation: pulse 2s ease-in-out infinite; }
+</style>
+ </head>
+ <body class="h-full bg-red-50 overflow-auto scroll-smooth">
+  <div id="app" class="w-full min-h-full"><!-- Promo Banner -->
+   <div id="promo-banner" class="promo-banner text-white py-3 px-4 text-center text-sm md:text-base font-medium sticky top-0 z-40"><span class="inline-flex items-center gap-2 justify-center flex-wrap"> 🔥 <span id="promo-text">Pesan sekarang dan dapatkan diskon spesial!</span> 🔥 </span>
+   </div><!-- Navigation -->
+   <nav class="bg-white/95 backdrop-blur-md shadow-lg sticky top-12 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex justify-between items-center h-16">
+<div class="flex items-center gap-2">
+  <img src="Logo Dimcum.png" alt="Logo Dimcum" class="h-10 md:h-12">
+
+       <div>
+<!-- nama brand ( header) -->
+        <div id="brand-name" class="playfair text-xl md:text-2xl font-bold text-red-600">
+         Dimcum A'SAM
+        </div>
+        <div class="text-xs text-red-500 font-semibold">
+         Teman Ngemil Paling Juara 
+        </div>
+       </div>
+      </div>
+      <div class="hidden lg:flex items-center gap-8"><a href="#game" class="nav-link text-gray-700 font-medium">🎮 Game</a> <a href="#menu" class="nav-link text-gray-700 font-medium">📜 Menu</a> <a href="#bestseller" class="nav-link text-gray-700 font-medium">🔥 Best Seller</a> <a href="#order" class="nav-link text-gray-700 font-medium">🛵 Pesan</a> <a href="#location" class="nav-link text-gray-700 font-medium">📍 Lokasi</a>
+      </div><button id="mobile-menu-btn" class="lg:hidden text-2xl text-gray-700">☰</button>
+     </div>
+    </div><!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-200">
+     <div class="px-4 py-4 space-y-3"><a href="#game" class="block text-gray-700 hover:text-red-600 font-medium py-2">🎮 Game</a> <a href="#menu" class="block text-gray-700 hover:text-red-600 font-medium py-2">📜 Menu</a> <a href="#bestseller" class="block text-gray-700 hover:text-red-600 font-medium py-2">🔥 Best Seller</a> <a href="#order" class="block text-gray-700 hover:text-red-600 font-medium py-2">🛵 Pesan</a> <a href="#location" class="block text-gray-700 hover:text-red-600 font-medium py-2">📍 Lokasi</a>
+     </div>
+    </div>
+   </nav>
+   <!-- Ganti bg -->
+<section class="relative text-white px-4 overflow-hidden bg-cover bg-center min-h-screen flex items-center justify-center"
+style="background-image: url('Merah Emas Tradisional Latar Belakang Perayaan Imlek Konten Instagram.svg');">
+
+  <div class="absolute inset-0 opacity-20"></div>
+
+  <div class="max-w-4xl mx-auto text-center relative z-10">
+    <h1 class="playfair text-5xl md:text-6xl lg:text-7xl font-bold mb-4 slide-in">
+      Dimsum Lezat, Hangat, dan Menggoda
+    </h1>
+
+    <p class="text-xl md:text-2xl mb-6 opacity-95 slide-in" style="animation-delay: 0.2s;">
+      Hanya di <span id="hero-brand" class="font-bold">Dimcum A'SAM</span> 😋
+    </p>
+
+    <p id="tagline" class="text-lg md:text-xl mb-8 opacity-90 slide-in" style="animation-delay: 0.4s;">
+      Nikmati cita rasa autentik dimsum dengan bahan berkualitas premium
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4 slide-in" style="animation-delay: 0.6s;">
+      <a href="#game" class="bg-white text-red-600 px-8 py-3 rounded-full font-bold hover:bg-yellow-100 transition-all hover:scale-105 shadow-lg hover:shadow-xl">🎮 Main Game</a>
+      <a href="#menu" class="border-2 border-white text-white px-8 py-3 rounded-full font-bold hover:bg-white hover:text-red-600 transition-all">📜 Lihat Menu</a>
+      <a href="#order" class="bg-yellow-400 text-red-600 px-8 py-3 rounded-full font-bold hover:bg-yellow-300 transition-all hover:scale-105 shadow-lg">🛵 Pesan Sekarang</a>
+    </div>
+  </div>
+
+</section>
+
+
+      </div>
+     </div>
+    </div>
+   </section><!-- Menu Section -->
+   <section id="menu" class="py-16 px-4 bg-white">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-gray-800 mb-3">📜 Menu Dimcum A'SAM</h2>
+      <p class="text-gray-600 text-lg">Pilihan dimsum imut dengan cita rasa autentik</p>
+     </div>
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><!-- Menu Items -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+
+<!-- Dimsum Ayam Original -->
+      <div class="h-48 overflow-hidden">
+      <img src="57301831-dim-sum.jpg.rendition.1960.1960.jpg" alt="Dimcum Ayam" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Dimcum Ayam Original</h3><span class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full">Popular</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Dimsum lembut dengan isian daging ayam pilihan yang dibumbui secara sempurna. Teksturnya lembut dengan rasa gurih yang khas, cocok dinikmati saat hangat.</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 2.500/pcs</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+
+<!-- Dimsum Udang Original -->
+<div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+   <div class="h-48 overflow-hidden">
+      <img src="dimsum-ayam-udang-foto-resep-utama.jpg" alt="Dimcum Udang" class="w-full h-full object-contain">
+   </div>
+
+   <div class="p-6">
+      <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Dimcum Udang Original</h3>
+         <span class="bg-amber-100 text-amber-600 text-xs font-bold px-3 py-1 rounded-full">Populer</span>
+      </div>
+
+      <p class="text-gray-600 text-sm mb-4">
+         Gurihnya berasa banget! Perpaduan ayam dan udang yang bikin nagih tiap gigitan.
+
+      </p>
+
+      <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+         <span class="text-gray-500 text-sm">(4.9)</span>
+      </div>
+
+      <div class="flex justify-between items-center">
+         <span class="text-2xl font-bold text-red-600">Rp 3.000/pcs</span>
+         <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all">
+            Pesan
+         </button>
+      </div>
+   </div>
+</div>
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+<div class="h-48 overflow-hidden">
+<img src="dimsum-with-japanese-mentai-sauce-served-plate_583400-5313.avif" alt="Dimcum Mentai" class="w-full h-full object-cover">
+</div>
+
+<!-- Dimsum Mentai  -->
+  <div class="p-6">
+    <div class="flex justify-between items-start mb-3">
+      <h3 class="font-bold text-xl text-gray-800">Dimcum Mentai</h3>
+      <span class="bg-purple-100 text-purple-600 text-xs font-bold px-3 py-1 rounded-full">
+        ⭐ Favorit
+      </span>
+    </div>
+
+    <p class="text-gray-600 text-sm mb-4">
+      Dimsum dengan topping mentai creamy yang lumer dan smoky. Mau ayam atau udang? Dua-duanya auto repeat!
+    </p>
+
+    <div class="flex items-center gap-1 mb-4">
+      <span class="text-yellow-400">⭐⭐⭐⭐⭐</span>
+      <span class="text-gray-500 text-sm">(4.9)</span>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <span class="text-2xl font-bold text-red-600">Rp 20.000</span>
+      <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all">
+        Pesan
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- Gyoza Ayam - Kuah -->
+<div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+
+  <img src="Resep-Pangsit-Ayam-Kuah-Pedas.jpg"
+       alt="Gyoza Kuah Ayam" 
+       class="w-full h-48 object-containt">
+
+  <div class="p-6">
+    <div class="flex justify-between items-start mb-3">
+      <h3 class="font-bold text-xl text-gray-800">Gyoza Ayam - Kuah</h3>
+      <span class="bg-blue-100 text-blue-600 text-xs font-bold px-3 py-1 rounded-full">
+        Hangat
+      </span>
+    </div>
+
+    <p class="text-gray-600 text-sm mb-4">
+      Gyoza dengan kulit lembut, isi ayam melimpah, disiram kuah hangat yang bikin hati adem.
+    </p>
+
+    <div class="flex items-center gap-1 mb-4">
+      <span class="text-yellow-400">⭐⭐⭐⭐</span>
+      <span class="text-gray-500 text-sm">(4.8)</span>
+    </div>
+
+    <div class="flex justify-between items-center">
+      <span class="text-2xl font-bold text-red-600">Rp 11.000</span>
+      <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all">
+        Pesan
+      </button>
+    </div>
+  </div>
+
+</div>
+<!-- Gyoza Ayam - Goreng -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="076393900_1673572216-shutterstock_1083919079.jpg" alt="Gyoza Goreng Ayam" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Gyoza Ayam - Goreng</h3><span class="bg-green-100 text-green-600 text-xs font-bold px-3 py-1 rounded-full">Crispy</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Gyoza renyah dengan isian ayam berbumbu dan saus sambal nikmat</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 11.000
+
+        </span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+<!-- Gyoza Udang - Kuah -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="oardefault.jpg" alt="Gyoza Kuah Udang" class="w-full h-full object-cover">
+
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Gyoza Udang - Kuah </h3><span class="bg-cyan-100 text-cyan-600 text-xs font-bold px-3 py-1 rounded-full">Seafood</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Gyoza dengan isian udang segar dalam kuah kaldu yang gurih sempurna</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 12.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+<!-- Gyoza Udang - Goreng -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="hot-thread-5-ini-resep-gyoza-ayam-udang-ala-jepang-SZKjChGb6i.jpg" alt="Gyoza Kuah Udang" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Gyoza Udang - Goreng</h3><span class="bg-red-100 text-red-600 text-xs font-bold px-3 py-1 rounded-full">Pedas</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Gyoza renyah isi udang dengan pelengkap sambal pedas khas</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.8)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 12.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+<!-- Gyoza Mentai (Ayam/Udang) -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="OIP (2).jpg" alt="Gyoza Kuah Udang" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Gyoza Mentai (Ayam/Udang)
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Gyoza renyah isi udang dengan pelengkap sambal pedas khas</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.8)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 12.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+
+<!-- Siomay Special -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="OIP (1).jpg" alt="Siomay Spesial" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Siomay Spesial</h3><span class="bg-indigo-100 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full">Combo</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Siomay nya enak bangett pliss, next time bakal repeat order</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 40.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+
+<!-- Wonton Keju -->
+       <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="Soupewonton.jpeg" alt="Wonton Keju" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Wonton Keju</h3><span class="bg-indigo-100 text-indigo-600 text-xs font-bold px-3 py-1 rounded-full">Combo</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Siomay nya enak bangett pliss, next time bakal repeat order</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 40.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+<!-- Wonton Kuah Seblak -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+       <div class="h-48 overflow-hidden">
+  <img src="id-11134207-7r98t-lwgcg3cupnkdfc.jpg" alt="Wonton Kuah Seblak" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Wonton Kuah Seblak</h3><span class="bg-orange-100 text-orange-600 text-xs font-bold px-3 py-1 rounded-full">Pedas Hits</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">Wontonnya enak bangett, rasanyaa nagihh</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.7)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 27.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+
+<!-- Wonton Chili oil -->
+      <div class="menu-card bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl overflow-hidden shadow-lg">
+     <div class="h-48 overflow-hidden">
+  <img src="Lindseyeats_Chicken_Wontons_Spicy_Sauce-5.jpg" alt="Wonton Chili oil" class="w-full h-full object-cover">
+       </div>
+       <div class="p-6">
+        <div class="flex justify-between items-start mb-3">
+         <h3 class="font-bold text-xl text-gray-800">Wonton Chili Oil</h3><span class="bg-rose-100 text-rose-600 text-xs font-bold px-3 py-1 rounded-full">Signature</span>
+        </div>
+        <p class="text-gray-600 text-sm mb-4">selain wontonnya, chili oil nya juga enak rasanya pas dan tidak nyenggrok</p>
+        <div class="flex items-center gap-1 mb-4">
+         <span class="text-yellow-400">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 text-sm">(4.9)</span>
+        </div>
+        <div class="flex justify-between items-center"><span class="text-2xl font-bold text-red-600">Rp 29.000</span> <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-all"> Pesan </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Best Seller Section -->
+
+<!-- Best Seller Section -->
+   <section id="bestseller" class="py-16 px-4 bg-gradient-to-br from-red-500 to-red-800">
+    <div class="max-w-6xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-white mb-3">🔥 Best Seller Dimcum A'SAM</h2>
+      <p class="text-red-100 text-lg">Menu favorit pelanggan kami yang paling laris!</p>
+     </div>
+     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8"><!-- Best Seller 1 -->
+      <div class="bestseller-card bg-white rounded-3xl overflow-hidden shadow-2xl">
+       <div class="relative">
+        <div class="h-64 bg-gradient-to-br from-yellow-100 to-yellow-200 flex items-center justify-center"><span class="text-9xl float-animation">🧀</span>
+        </div>
+        <div class="absolute top-4 left-4 bg-red-600 text-white px-4 py-2 rounded-full font-bold text-sm flex items-center gap-1">
+         🔥 Paling Favorit
+        </div>
+        <div class="absolute top-4 right-4 badge-pulse bg-amber-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+         600+ terjual
+        </div>
+       </div>
+       <div class="p-7">
+        <h3 class="font-bold text-2xl text-gray-800 mb-2">Dimcum Mentai</h3>
+        <div class="flex items-center gap-2 mb-4"><span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 font-medium">(4.9 dari 450 ulasan)</span>
+        </div>
+        <div class="bg-yellow-50 rounded-xl p-4 mb-5 border-l-4 border-yellow-400">
+         <p class="text-gray-700 italic font-medium">"Mantap! Mentainya melimpah dan lezat sekali. Paling suka sama dimcum yang ini!"</p>
+         <p class="text-gray-500 text-sm mt-2 font-semibold">- Ibu Siti</p>
+        </div>
+        <div class="flex justify-between items-center">
+         <div><span class="text-gray-400 line-through text-sm font-medium">Rp 40.000</span> <span class="text-2xl font-bold text-red-600 ml-2">Rp 35.000</span>
+         </div><button class="gold-gradient text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all btn-order"> Pesan Sekarang </button>
+        </div>
+       </div>
+      </div><!-- Best Seller 2 -->
+      <div class="bestseller-card bg-white rounded-3xl overflow-hidden shadow-2xl">
+       <div class="relative">
+        <div class="h-64 bg-gradient-to-br from-rose-100 to-rose-200 flex items-center justify-center"><span class="text-9xl float-animation" style="animation-delay: 0.5s;">✨</span>
+        </div>
+        <div class="absolute top-4 left-4 bg-amber-500 text-white px-4 py-2 rounded-full font-bold text-sm flex items-center gap-1">
+         ⭐ Terlaris Minggu Ini
+        </div>
+        <div class="absolute top-4 right-4 badge-pulse bg-green-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+         550+ terjual
+        </div>
+       </div>
+       <div class="p-7">
+        <h3 class="font-bold text-2xl text-gray-800 mb-2">Wonton Chili Oil</h3>
+        <div class="flex items-center gap-2 mb-4"><span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 font-medium">(4.9 dari 380 ulasan)</span>
+        </div>
+        <div class="bg-rose-50 rounded-xl p-4 mb-5 border-l-4 border-rose-400">
+         <p class="text-gray-700 italic font-medium">"Wonton-nya lembut dan minyak cabinya sangat nyaman! Ini signature item yang worth it!"</p>
+         <p class="text-gray-500 text-sm mt-2 font-semibold">- Pak Budi</p>
+        </div>
+        <div class="flex justify-between items-center">
+         <div><span class="text-gray-400 line-through text-sm font-medium">Rp 33.000</span> <span class="text-2xl font-bold text-red-600 ml-2">Rp 29.000</span>
+         </div><button class="gold-gradient text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all btn-order"> Pesan Sekarang </button>
+        </div>
+       </div>
+      </div><!-- Best Seller 3 -->
+      <div class="bestseller-card bg-white rounded-3xl overflow-hidden shadow-2xl">
+       <div class="relative">
+        <div class="h-64 bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center"><span class="text-9xl float-animation" style="animation-delay: 1s;">🌶️</span>
+        </div>
+        <div class="absolute top-4 left-4 bg-orange-500 text-white px-4 py-2 rounded-full font-bold text-sm flex items-center gap-1">
+         🏆 Top Rating
+        </div>
+        <div class="absolute top-4 right-4 badge-pulse bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+         520+ terjual
+        </div>
+       </div>
+       <div class="p-7">
+        <h3 class="font-bold text-2xl text-gray-800 mb-2">Gyoza Goreng Udang</h3>
+        <div class="flex items-center gap-2 mb-4"><span class="text-yellow-400 text-lg">⭐⭐⭐⭐⭐</span> <span class="text-gray-500 font-medium">(4.9 dari 420 ulasan)</span>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-4 mb-5 border-l-4 border-purple-400">
+         <p class="text-gray-700 italic font-medium">"Udangnya gede-gede dan crispy banget! Kulitnya sempurna, isian melimpah. Recomended!"</p>
+         <p class="text-gray-500 text-sm mt-2 font-semibold">- Tante Citra</p>
+        </div>
+        <div class="flex justify-between items-center">
+         <div><span class="text-gray-400 line-through text-sm font-medium">Rp 35.000</span> <span class="text-2xl font-bold text-red-600 ml-2">Rp 31.000</span>
+         </div><button class="gold-gradient text-white px-6 py-3 rounded-full font-bold hover:opacity-90 transition-all btn-order"> Pesan Sekarang </button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Order Section -->
+
+   <!-- e commerce -->
+   <section id="order" class="py-16 px-4 bg-gradient-to-b from-red-50 to-orange-50">
+    <div class="max-w-4xl mx-auto text-center">
+     <h2 class="playfair text-4xl md:text-5xl font-bold text-gray-800 mb-3">🛵 Pesan Sekarang</h2>
+     <p class="text-gray-600 text-lg mb-4">Pesan dimsum favoritmu melalui aplikasi delivery pilihan kamu!</p>
+     <p class="text-gray-600 mb-10 font-medium">Cepat, mudah, dan dapat diskon spesial untuk setiap pemesanan 🎉</p>
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-6"><!-- GoFood --> <a href="https://www.gofood.co.id" target="_blank" rel="noopener noreferrer" class="bg-white rounded-3xl shadow-lg p-8 hover:shadow-2xl transition-all hover:-translate-y-3 group border-2 border-transparent hover:border-red-500">
+       <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-white-500 to-white-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-all overflow-hidden">
+   <img src="gofood-vector-logo-idngrafis (1).png" alt="Gofood" class="w-12 h-12 object-contain">
+
+       </div><h3 class="font-bold text-2xl text-gray-800 mb-2">GoFood</h3><p class="text-gray-600 text-base mb-5 font-medium">Pesan via Gojek sekarang</p><span class="inline-block bg-green-100 text-green-600 px-6 py-3 rounded-full font-bold text-base group-hover:bg-green-600 group-hover:text-white transition-all"> Buka GoFood → </span> </a> <!-- GoFood --> <a href="https://www.grabfood.com" target="_blank" rel="noopener noreferrer" class="bg-white rounded-3xl shadow-lg p-8 hover:shadow-2xl transition-all hover:-translate-y-3 group border-2 border-transparent hover:border-red-500">
+       <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-white-500 to-white-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-all overflow-hidden">
+   <img src="Logo-Grab-Food-xl.png" alt="GrabFood" class="w-17 h-16 object-contain">
+       </div><h3 class="font-bold text-2xl text-gray-800 mb-2">GrabFood</h3><p class="text-gray-600 text-base mb-5 font-medium">Pesan via Grab sekarang</p><span class="inline-block bg-green-100 text-green-600 px-6 py-3 rounded-full font-bold text-base group-hover:bg-green-700 group-hover:text-white transition-all"> Buka GrabFood → </span> </a> <!-- GrabFoof --> <a href="https://www.shopee.co.id/food" target="_blank" rel="noopener noreferrer" class="bg-white rounded-3xl shadow-lg p-8 hover:shadow-2xl transition-all hover:-translate-y-3 group border-2 border-transparent hover:border-red-500">
+       <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-white-500 to-white-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-all overflow-hidden">
+   <img src="Shopee-Food-Symbol.png" alt="ShopeeFood" class="w-16 h-16 object-contain">
+       </div><h3 class="font-bold text-2xl text-gray-800 mb-2">ShopeeFood</h3><p class="text-gray-600 text-base mb-5 font-medium">Pesan via Shopee sekarang</p><span class="inline-block bg-orange-100 text-orange-600 px-6 py-3 rounded-full font-bold text-base group-hover:bg-orange-600 group-hover:text-white transition-all"> Buka ShopeeFood → </span> </a> 
+     </div>
+     <div class="mt-12 bg-white rounded-3xl shadow-lg p-8 border-2 border-red-200">
+      <p class="text-gray-700 text-lg font-bold mb-3">⏰ Jam Operasional</p>
+      <p class="text-gray-600 text-base">Senin - Jumat: <span class="font-bold text-red-600">10:00 - 22:00</span><br>
+        Sabtu - Minggu: <span class="font-bold text-red-600">09:00 - 23:00</span></p>
+     </div>
+    </div>
+   </section><!-- Location Section -->
+   <section id="location" class="py-16 px-4 bg-white">
+    <div class="max-w-4xl mx-auto">
+     <div class="text-center mb-12">
+      <h2 class="playfair text-4xl md:text-5xl font-bold text-gray-800 mb-3">📍 Lokasi Kami</h2>
+      <p class="text-gray-600 text-lg">Kunjungi outlet kami untuk pengalaman makan yang lebih nikmat!</p>
+     </div>
+     <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl overflow-hidden shadow-lg border-2 border-red-100"><!-- Map Placeholder -->
+      <div class="h-72 bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center relative overflow-hidden">
+       <div class="text-center relative z-10">
+        <p class="text-6xl mb-4">📍</p>
+        <p class="text-gray-700 font-bold text-lg">Dimcum A'SAM, Sidoarjo</p>
+       </div>
+       <div class="absolute top-0 left-0 w-full h-full opacity-10">
+        <div class="text-center pt-16 text-9xl">
+         🗺️
+        </div>
+       </div>
+      </div>
+      <div class="p-8 md:p-10">
+       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div>
+         <h3 class="font-bold text-xl text-red-600 mb-4 flex items-center gap-2">📍 Alamat Lengkap</h3>
+         <p class="text-gray-700 font-semibold text-base leading-relaxed">Perum Sawocangkring Permai Blok F12<br>
+           RT 12 RW 02<br>
+           Wonoayu, Sidoarjo<br>
+           Jawa Timur 61232</p>
+        </div>
+        <div>
+         <h3 class="font-bold text-xl text-red-600 mb-4 flex items-center gap-2">🕐 Jam Operasional</h3>
+         <p class="text-gray-700 font-semibold text-base leading-relaxed">Senin - Kamis: 10:00 - 22:00<br>
+           Sabtu - Minggu: 07:00 - 23:00<br><span class="text-green-600 font-bold inline-block mt-2">● Buka Sekarang</span></p>
+        </div>
+       </div>
+       <div class="flex flex-wrap gap-4"><a href="https://maps.google.com/maps/search/Perum+Sawocangkring+Permai+Blok+F12+Wonoayu+Sidoarjo" target="_blank" rel="noopener noreferrer" class="bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-full font-bold transition-all inline-flex items-center gap-2 btn-order text-lg"> 📍 Buka di Google Maps </a> <a href="tel:+62-888-123-4567" class="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full font-bold transition-all inline-flex items-center gap-2 btn-order text-lg"> 📞 Hubungi Kami </a> <a href="https://wa.me/+6283893331236" target="_blank" rel="noopener noreferrer" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-bold transition-all inline-flex items-center gap-2 btn-order text-lg"> 💬 WhatsApp </a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Footer -->
+<!-- Footer -->
+   <footer class="bg-gray-900 text-white py-12 px-4">
+    <div class="max-w-6xl mx-auto">
+     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div>
+       <div class="flex items-center gap-2 mb-4"><span class="text-4xl">🥟</span>
+        <div>
+         <div id="footer-brand" class="playfair text-2xl font-bold">
+          Dimcum A'SAM
+         </div>
+         <p class="text-xs text-red-300">Dimsum Lezat &amp; Hangat</p>
+        </div>
+       </div>
+       <p class="text-gray-400 text-sm leading-relaxed">Dimcum A'SAM menghadirkan kelezatan dimsum autentik dengan cita rasa premium untuk keluarga Indonesia di Sidoarjo.</p>
+      </div>
+      <div>
+       <h4 class="font-bold text-lg mb-4">Quick Links</h4>
+       <ul class="space-y-3 text-gray-400">
+        <li><a href="#menu" class="hover:text-white transition-colors font-medium">📜 Menu</a></li>
+        <li><a href="#bestseller" class="hover:text-white transition-colors font-medium">🔥 Best Seller</a></li>
+        <li><a href="#order" class="hover:text-white transition-colors font-medium">🛵 Order Online</a></li>
+       </ul>
+      </div>
+      <div>
+       <h4 class="font-bold text-lg mb-4">Hubungi Kami</h4>
+       <ul class="space-y-3 text-gray-400 font-medium">
+        <li>📞 +62 838-9333-1236</li>
+        <li>💬 WhatsApp: +62 838-9333-1236</li>
+        <li>📧 info@dimcum-asam.id</li>
+        <li>📍 Sidoarjo, Jawa Timur</li>
+       </ul>
+      </div>
+     </div>
+     <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+      <p>© 2026 Dimcum A'SAM. Semua hak dilindungi. | Dibuat dengan cinta untuk Anda</p>
+     </div>
+    </div>
+   </footer><!-- Scroll to Top Button --> <button id="scroll-to-top" class="scroll-to-top fixed bottom-8 right-8 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg font-bold text-2xl transition-all hover:scale-110"> ↑ </button> <!-- Win Modal -->
+   <div id="win-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-8 text-center relative overflow-hidden animate-bounce-in">
+     <div id="confetti-container" class="absolute inset-0 pointer-events-none"></div>
+     <div class="relative z-10">
+      <div class="text-7xl mb-4 animate-bounce">
+       🎉
+      </div>
+      <h3 class="playfair text-4xl font-bold text-gray-800 mb-3">Selamat!</h3>
+      <p class="text-gray-600 text-lg mb-6">Kamu berhasil menemukan semua pasangan dimsum! 🥟</p>
+      <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 mb-6 border-2 border-red-200">
+       <p class="text-2xl font-bold text-red-600 mb-2">Skor: <span id="final-score">0</span></p>
+       <p class="text-gray-600 font-medium">Waktu: <span id="final-time">00:00</span></p>
+      </div>
+      <p class="text-gray-700 mb-8 text-base font-semibold">Sekarang waktunya pesan dimsum asli dari Dimcum A'SAM! 😋</p><!-- Save Score Form -->
+      <div id="save-score-form" class="mb-6"><input type="text" id="player-name" placeholder="Masukkan namamu untuk leaderboard" class="w-full px-4 py-3 border-2 border-red-200 rounded-xl focus:border-red-600 focus:outline-none mb-4 font-medium text-base"> <button id="save-score-btn" class="w-full bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-xl font-bold transition-all text-lg"> 💾 Simpan Skor </button>
+      </div>
+      <div class="flex gap-3 flex-col sm:flex-row"><button id="play-again-btn" class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition-all btn-order text-lg"> 🔄 Main Lagi </button> <a href="#order" id="order-now-btn" class="flex-1 gold-gradient text-white px-6 py-3 rounded-xl font-bold hover:opacity-90 transition-all inline-block text-lg"> 🛵 Pesan </a>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+// ==================== CONFIG & DATA ====================
+
+const defaultConfig = {
+  brand_name: 'Dimcum A\'SAM',
+  tagline: 'Nikmati cita rasa autentik dimcum',
+  promo_text: 'Pesan sekarang dan dapatkan diskon spesial!',
+  primary_color: '#dc2626',
+  secondary_color: '#f59e0b',
+  background_color: '#fef5e7',
+  text_color: '#1f2937',
+  accent_color: '#059669'
+};
+
+const dimsumTypes = [
+
+  {
+    id: "dimsum-ayam",
+    name: "Dimcum Ayam",
+    image: "photo.jpg"
+  },
+  {
+    id: "dimsum-udang",
+    name: "Dimcum Udang",
+    image: "Resep-Dimsum-Udang.jpg"
+  },
+  {
+    id: "dimsum-mentai",
+    name: "Dimcum Mentai",
+    image: "dimsum-with-japanese-mentai-sauce-served-plate_583400-5313.avif"
+  },
+  {
+    id: "gyoza-kuah-ayam",
+    name: "Gyoza Kuah Ayam",
+    image: "gyoza-kuah-pedas-foto-resep-utama.jpg"
+  },
+  {
+    id: "gyoza-goreng-ayam",
+    name: "Gyoza Goreng Ayam",
+    image: "OIP.jpg"
+  },
+  {
+    id: "gyoza-kuah-udang",
+    name: "Gyoza Kuah Udang",
+    image: "gyoza-kuah-pedas-foto-resep-utama.jpg"
+  },
+  {
+    id: "gyoza-goreng-udang",
+    name: "Gyoza Goreng Udang",
+    image: "OIP.jpg"
+  },
+  {
+    id: "siomay",
+    name: "Siomay",
+    image: "OIP (1).jpg"
+  },
+  {
+    id: "wonton-kuah-seblak",
+    name: "Wonton Kuah Seblak",
+    image: "images/wonton-kuah-seblak.jpg"
+  },
+  {
+    id: "wonton-chili-oil",
+    name: "Wonton Chili Oil",
+    image: "Lindseyeats_Chicken_Wontons_Spicy_Sauce-5.jpg"
+  }
+];
+
+// ==================== GAME STATE ====================
+
+let gameState = {
+  cards: [],
+  flippedCards: [],
+  matchedPairs: 0,
+  score: 0,
+  timer: 0,
+  timerInterval: null,
+  isPlaying: false,
+  canFlip: true
+};
+
+let leaderboardData = [];
+
+// ==================== AUDIO CONTEXT ====================
+
+const audioContext = typeof AudioContext !== 'undefined' ? new AudioContext() : null;
+
+function playSound(type) {
+  if (!audioContext) return;
+  
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  if (type === 'flip') {
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  } else if (type === 'match') {
+    oscillator.frequency.setValueAtTime(523, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(659, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(784, audioContext.currentTime + 0.2);
+    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+  } else if (type === 'win') {
+    const notes = [523, 659, 784, 1047];
+    notes.forEach((freq, i) => {
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      osc.connect(gain);
+      gain.connect(audioContext.destination);
+      osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.15);
+      gain.gain.setValueAtTime(0.15, audioContext.currentTime + i * 0.15);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.15 + 0.3);
+      osc.start(audioContext.currentTime + i * 0.15);
+      osc.stop(audioContext.currentTime + i * 0.15 + 0.3);
+    });
+  }
+}
+
+// ==================== GAME FUNCTIONS ====================
+
+function initializeGame() {
+  const board = document.getElementById('game-board');
+  board.innerHTML = '';
+  
+  // Create pairs
+  const cardData = [...dimsumTypes, ...dimsumTypes];
+  
+  // Shuffle using Fisher-Yates
+  for (let i = cardData.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [cardData[i], cardData[j]] = [cardData[j], cardData[i]];
+  }
+  
+  gameState.cards = cardData.map((dimsum, index) => ({
+    ...dimsum,
+    index,
+    isFlipped: false,
+    isMatched: false
+  }));
+  
+  // Create card elements
+  gameState.cards.forEach((card, index) => {
+    const cardElement = document.createElement('div');
+    cardElement.className = 'card-container aspect-square cursor-pointer';
+    cardElement.dataset.index = index;
+    cardElement.innerHTML = `
+      <div class="card-inner w-full h-full">
+        <div class="card-front bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg rounded-xl">
+          <span class="text-5xl md:text-6xl text-white/40">?</span>
+        </div>
+        <div class="card-back bg-gradient-to-br ${card.color} flex flex-col items-center justify-center shadow-lg p-2 rounded-xl">
+          <span class="text-5xl md:text-6xl mb-1">${card.emoji}</span>
+          <span class="text-xs font-bold text-gray-700 hidden sm:block">${card.name}</span>
+        </div>
+      </div>
+    `;
+    cardElement.addEventListener('click', () => flipCard(index));
+    board.appendChild(cardElement);
+  });
+  
+  gameState.flippedCards = [];
+  gameState.matchedPairs = 0;
+  gameState.score = 0;
+  gameState.timer = 0;
+  gameState.isPlaying = false;
+  gameState.canFlip = true;
+  
+  updateStats();
+}
+
+function flipCard(index) {
+  if (!gameState.isPlaying || !gameState.canFlip) return;
+  
+  const card = gameState.cards[index];
+  if (card.isFlipped || card.isMatched) return;
+  if (gameState.flippedCards.length >= 2) return;
+  
+  playSound('flip');
+  
+  card.isFlipped = true;
+  gameState.flippedCards.push(index);
+  
+  const cardElement = document.querySelector(`[data-index="${index}"]`);
+  cardElement.classList.add('card-flipped');
+  
+  if (gameState.flippedCards.length === 2) {
+    gameState.canFlip = false;
+    checkMatch();
+  }
+}
+
+function checkMatch() {
+  const [index1, index2] = gameState.flippedCards;
+  const card1 = gameState.cards[index1];
+  const card2 = gameState.cards[index2];
+  
+  if (card1.id === card2.id) {
+    playSound('match');
+    
+    card1.isMatched = true;
+    card2.isMatched = true;
+    gameState.matchedPairs++;
+    gameState.score += Math.max(100 - gameState.timer, 10);
+    
+    const cardElement1 = document.querySelector(`[data-index="${index1}"]`);
+    const cardElement2 = document.querySelector(`[data-index="${index2}"]`);
+    cardElement1.classList.add('card-matched');
+    cardElement2.classList.add('card-matched');
+    
+    gameState.flippedCards = [];
+    gameState.canFlip = true;
+    updateStats();
+    
+    if (gameState.matchedPairs === 5) {
+      endGame();
+    }
+  } else {
+    setTimeout(() => {
+      card1.isFlipped = false;
+      card2.isFlipped = false;
+      
+      const cardElement1 = document.querySelector(`[data-index="${index1}"]`);
+      const cardElement2 = document.querySelector(`[data-index="${index2}"]`);
+      cardElement1.classList.remove('card-flipped');
+      cardElement2.classList.remove('card-flipped');
+      
+      gameState.flippedCards = [];
+      gameState.canFlip = true;
+    }, 1000);
+  }
+}
+
+function updateStats() {
+  document.getElementById('pairs-found').textContent = `${gameState.matchedPairs}/5`;
+  document.getElementById('score').textContent = gameState.score;
+}
+
+function updateTimer() {
+  const minutes = Math.floor(gameState.timer / 60);
+  const seconds = gameState.timer % 60;
+  document.getElementById('timer').textContent = 
+    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startGame() {
+  initializeGame();
+  gameState.isPlaying = true;
+  
+  document.getElementById('start-btn').classList.add('hidden');
+  document.getElementById('reset-btn').classList.remove('hidden');
+  
+  gameState.timerInterval = setInterval(() => {
+    gameState.timer++;
+    updateTimer();
+  }, 1000);
+}
+
+function endGame() {
+  clearInterval(gameState.timerInterval);
+  gameState.isPlaying = false;
+  
+  playSound('win');
+  
+  const modal = document.getElementById('win-modal');
+  modal.classList.remove('hidden');
+  
+  document.getElementById('final-score').textContent = gameState.score;
+  document.getElementById('final-time').textContent = document.getElementById('timer').textContent;
+  
+  createConfetti();
+}
+
+function createConfetti() {
+  const container = document.getElementById('confetti-container');
+  container.innerHTML = '';
+  
+  const colors = ['#dc2626', '#f59e0b', '#22c55e', '#3b82f6', '#ec4899'];
+  
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = `${Math.random() * 100}%`;
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = `${Math.random() * 2}s`;
+    confetti.style.animationDuration = `${2 + Math.random() * 2}s`;
+    container.appendChild(confetti);
+  }
+}
+
+function resetGame() {
+  clearInterval(gameState.timerInterval);
+  document.getElementById('win-modal').classList.add('hidden');
+  document.getElementById('save-score-form').classList.remove('hidden');
+  document.getElementById('player-name').value = '';
+  startGame();
+}
+
+function renderLeaderboard(data) {
+  const leaderboard = document.getElementById('leaderboard');
+  
+  if (data.length === 0) {
+    leaderboard.innerHTML = '<p class="text-gray-500 text-center py-8 text-lg">Belum ada skor. Jadilah yang pertama!</p>';
+    return;
+  }
+  
+  const sortedData = [...data].sort((a, b) => b.score - a.score);
+  const topScores = sortedData.slice(0, 10);
+  
+  leaderboard.innerHTML = topScores.map((entry, index) => {
+    const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+    const minutes = Math.floor(entry.time / 60);
+    const seconds = entry.time % 60;
+    const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    return `
+      <div class="flex items-center justify-between bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-4 ${index < 3 ? 'border-2 border-red-300' : 'border border-gray-200'}">
+        <div class="flex items-center gap-3">
+          <span class="text-2xl">${medal}</span>
+          <span class="font-bold text-gray-800 text-base">${entry.player_name || 'Anonymous'}</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="text-gray-600 text-sm font-medium">⏱️ ${timeStr}</span>
+          <span class="font-bold text-red-600 text-lg">⭐ ${entry.score}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ==================== SAVE SCORE ====================
+
+async function saveScore() {
+  const playerName = document.getElementById('player-name').value.trim();
+  if (!playerName) {
+    document.getElementById('player-name').classList.add('border-red-500');
+    document.getElementById('player-name').placeholder = 'Nama wajib diisi!';
+    return;
+  }
+  
+  if (leaderboardData.length >= 999) {
+    const saveBtn = document.getElementById('save-score-btn');
+    saveBtn.textContent = '❌ Leaderboard penuh!';
+    saveBtn.disabled = true;
+    return;
+  }
+  
+  const saveBtn = document.getElementById('save-score-btn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = '💾 Menyimpan...';
+  
+  const scoreData = {
+    player_name: playerName,
+    score: gameState.score,
+    time: gameState.timer,
+    created_at: new Date().toISOString()
+  };
+  
+  if (window.dataSdk) {
+    const result = await window.dataSdk.create(scoreData);
+    if (result.isOk) {
+      document.getElementById('save-score-form').classList.add('hidden');
+    } else {
+      saveBtn.textContent = '❌ Gagal menyimpan';
+      saveBtn.disabled = false;
+    }
+  }
+}
+
+// ==================== UI HANDLERS ====================
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  menu.classList.toggle('hidden');
+}
+
+function handleScrollToTop() {
+  const scrollBtn = document.getElementById('scroll-to-top');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.add('show');
+    } else {
+      scrollBtn.classList.remove('show');
+    }
+  });
+  
+  scrollBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+// ==================== ELEMENT SDK ====================
+
+async function initElementSdk() {
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => {
+        const brandName = config.brand_name || defaultConfig.brand_name;
+        const tagline = config.tagline || defaultConfig.tagline;
+        const promoText = config.promo_text || defaultConfig.promo_text;
+        
+        document.getElementById('brand-name').textContent = brandName;
+        document.getElementById('hero-brand').textContent = brandName;
+        document.getElementById('footer-brand').textContent = brandName;
+        document.getElementById('tagline').textContent = tagline;
+        document.getElementById('promo-text').textContent = promoText;
+      },
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              window.elementSdk.setConfig({ background_color: value });
+            }
+          },
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              config.primary_color = value;
+              window.elementSdk.setConfig({ primary_color: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.secondary_color || defaultConfig.secondary_color,
+            set: (value) => {
+              config.secondary_color = value;
+              window.elementSdk.setConfig({ secondary_color: value });
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              window.elementSdk.setConfig({ accent_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['brand_name', config.brand_name || defaultConfig.brand_name],
+        ['tagline', config.tagline || defaultConfig.tagline],
+        ['promo_text', config.promo_text || defaultConfig.promo_text]
+      ])
+    });
+  }
+}
+
+// ==================== DATA SDK ====================
+
+async function initDataSdk() {
+  if (window.dataSdk) {
+    const dataHandler = {
+      onDataChanged(data) {
+        leaderboardData = data;
+        renderLeaderboard(data);
+      }
+    };
+    
+    const result = await window.dataSdk.init(dataHandler);
+    if (!result.isOk) {
+      console.error('Failed to initialize Data SDK');
+    }
+  }
+}
+
+// ==================== INITIALIZE ====================
+
+async function initApp() {
+  await initElementSdk();
+  await initDataSdk();
+  
+  initializeGame();
+  handleScrollToTop();
+  
+  // Event Listeners
+  document.getElementById('start-btn').addEventListener('click', startGame);
+  document.getElementById('reset-btn').addEventListener('click', resetGame);
+  document.getElementById('play-again-btn').addEventListener('click', resetGame);
+  document.getElementById('save-score-btn').addEventListener('click', saveScore);
+  document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+  
+  document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.add('hidden');
+    });
+  });
+  
+  document.getElementById('player-name').addEventListener('input', function() {
+    this.classList.remove('border-red-500');
+    this.placeholder = 'Masukkan namamu untuk leaderboard';
+  });
+}
+
+// Start the app
+initApp();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d775fee02404d96',t:'MTc3MjY5NTQwMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
