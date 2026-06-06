@@ -19,8 +19,8 @@ const menuData = {
   "Gyoza Mentai":                { price: 12000, unit: '' },
   "Siomay Spesial":              { price: 40000, unit: '' },
   "Wonton Keju":                 { price: 40000, unit: '' },
-  "Wonton Kuah Seblak":          { price: 27000, unit: '' },
-  "Wonton Chili Oil":            { price: 29000, unit: '' },
+  "Wonton Kuah Seblak":          { price: 15000, unit: '' },
+  "Wonton Chili Oil":            { price: 13000, unit: '' },
 };
 
 // ==================== CART STATE ====================
